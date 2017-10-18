@@ -1,70 +1,27 @@
+var express = require('express');
 
-function add(a, b) {
+var app = express();
 
-    a++;
-    a++;
-    b--
+app.listen(3000, function () {
+    console.log("Server running on port 3000");
+});
 
-    return a + b;
-}
+app.get('/', function (req, res) {
+    res.send("Home page");
+});
 
+app.get('/books', function (req, res) {
 
-console.log(add(2, 3));
+    var books = [
+        { id: 1, title: 'Speaking Javascript', price: 30 },
+        { id: 2, title: 'Algorithms and Data Structures', price: 20 },
+        { id: 3, title: 'Headfirst Javascript', price: 15 }];
 
+        res.status(200); //ok
+        res.json(books);
+});
 
-
-function addAsync(a, b, cb) {
-
-    setTimeout(function () {
-        var c = a + b;
-        cb(c);
-    }, 2000);  //min 2 sec
-
-    //return undefined;
-}
-
-
-function callback(result) {
-    console.log(result);
-}
-
-addAsync(2, 3, callback);
-
-
-//javascript dynamic lang
-// 1. Node runtime
-// 2. Asynchrounous
-// 3. Single threaded
-
-function print(a) {
-    return a;
-}
-
-// function myFun() { return 20; }
-
-// console.log(print(10));
-// console.log(print("Mujib"));
-// console.log(print([1, 2, 3]));
-// console.log(print(myFun));
-// console.log(print(10, 20, 30));
-// console.log(print());
-
-
-// var obj = {
-//     name: "Mujib",
-//     display: function () {
-//         console.log(this.name);
-//     },
-//     "name of prop": "This looks like an invalid prop but its not"
-// };
-
-
-// for(var key in obj){
-//     console.log(obj[key])
-// }
-
-
-
-// console.log(obj["name of prop"]);
-
-// obj.display();
+app.get('/products',function(req,res){
+    res.status(200);
+    res.send("List of products");
+})
