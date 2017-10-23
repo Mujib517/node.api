@@ -1,52 +1,84 @@
-var books = [
-    { id: 1, title: 'Speaking Javascript', price: 30 },
-    { id: 2, title: 'Algorithms and Data Structures', price: 20 },
-    { id: 3, title: 'Headfirst Javascript', price: 15 }];
+var Book = require('../models/book.model');
 
 function BookCtrl() {
 
     this.get = function (req, res) {
-        res.status(200); //ok
-        res.json(books);
+
+        //asychrnouse operations
+        Book.find(function (err, books) {
+            res.status(200);
+            res.json(books);
+        });
     };
 
     this.getById = function (req, res) {
 
-        var id = +req.params.id;
-        var book;
+        var id = req.params.id;
 
-        for (var i = 0; i < books.length; i++) {
-            if (books[i].id === id) {
-                book = books[i];
-                break;
+        Book.findById(id, function (err, book) {
+            if (err) {
+                res.status(500);
+                res.send("Internal Server Error");
             }
-        }
-
-        if (book) {
-            res.status(200);
-            res.json(book);
-        }
-        else{
-            res.status(404);//not found
-            res.send("Not found");
-        }
+            else {
+                if (!book) {
+                    res.status(404);
+                    res.send("Not found");
+                }
+                else {
+                    res.status(200);
+                    res.json(book);
+                }
+            }
+        });
     };
 
     this.save = function (req, res) {
 
-        books.push(req.body);
-        res.status(201); //created
-        res.send("Saved!");
+        var book = new Book(req.body);
+        book.save(function (err, book) {
+            if (err) {
+                res.status(500); //Internal server error
+                //logging logger.error(err);
+                res.send("Internal Server Error");
+            }
+            else {
+                res.status(201); //created
+                res.send("Saved!");
+            }
+        });
     };
 
     this.update = function (req, res) {
-        res.status(200);
-        res.send("Updated");
+
+        var book = new Book(req.body);
+
+        book.update({ _id: book._id }, function (err, updatedBook) {
+            if (err) {
+                res.status(500);
+                res.send(err);
+            }
+            else {
+                res.status(200);
+                res.json(updatedBook);
+            }
+        });
     };
 
     this.delete = function (req, res) {
-        res.status(204);
-        res.send("Deleted!");
+
+        var id = req.params.id;
+
+        Book.remove({ _id: id }, function (err) {
+            if (!err) {
+                res.status(204);
+                res.send("Deleted!");
+            }
+            else {
+                res.status(500);
+                res.send(err);
+            }
+        });
     };
 };
 

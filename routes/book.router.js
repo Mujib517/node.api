@@ -7,6 +7,6 @@ router.get('', bookCtrl.get);
 router.get('/:id', bookCtrl.getById);
 router.post('/', bookCtrl.save);
 router.put('/', bookCtrl.update);
-router.delete('/', bookCtrl.delete);
+router.delete('/:id', bookCtrl.delete);
 
 module.exports=router;
