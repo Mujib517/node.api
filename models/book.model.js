@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var schema = new mongoose.Schema({
-    title: { type: String, required: true },
+    title: { type: String, required: true,unique:true },
     published: { type: Boolean, default: false },
     price: { type: Number, required: true },
     lastUpdated: { type: Date, default: Date.now }
