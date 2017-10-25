@@ -1,5 +1,6 @@
 //ODM  
 var Book = require('../models/book.model');
+var Review = require('../models/review.model');
 
 function BookCtrl() {
 
@@ -64,8 +65,16 @@ function BookCtrl() {
                     res.send("Not found");
                 }
                 else {
-                    res.status(200);
-                    res.json(book);
+
+                    var jsonBook = book.toJSON();
+
+                    Review.find({ bookId: jsonBook._id })
+                        .exec()
+                        .then(function (reviews) {
+                            jsonBook.reviews = reviews;
+                            res.status(200);
+                            res.json(jsonBook);
+                        });
                 }
             })
             .catch(function (err) {
@@ -96,14 +105,14 @@ function BookCtrl() {
 
         var book = new Book(req.body);
 
-        book.update({ _id: book._id }, function (err, updatedBook) {
-            if (err) {
-                res.status(500);
-                res.send(err);
-            }
-            else {
+        Book.findByIdAndUpdate(book._id, book, function (err, updatedBook) {
+            if (!err) {
                 res.status(200);
                 res.json(updatedBook);
+            }
+            else {
+                res.status(500);
+                res.send("Internal Server Error");
             }
         });
     };
