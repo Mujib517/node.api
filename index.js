@@ -10,7 +10,8 @@ var reviewRouter = require('./routes/review.router');
 var userRouter = require('./routes/user.router');
 var middlewares = require('./middlewares');
 
-app.listen(3000, function () {
+var port=process.env.PORT||3000;
+app.listen(port, function () {
     console.log("Server running on port 3000");
 });
 
@@ -23,7 +24,7 @@ app.use(bodyParser.json());
 app.use('/', defaultRouter);
 app.use('/api/user', userRouter);
 
-//app.use(middlewares.isAuthorized);
+app.use(middlewares.isAuthorized);
 
 //private
 app.use('/api/books', bookRouter);
