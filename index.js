@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use('/', defaultRouter);
 app.use('/api/user', userRouter);
 
-app.use(middlewares.isAuthorized);
+//app.use(middlewares.isAuthorized);
 
 //private
 app.use('/api/books', bookRouter);
