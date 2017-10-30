@@ -89,7 +89,7 @@ function BookCtrl() {
         book.save(function (err, book) {
             if (err) {
                 res.status(500);
-                if (err.errmsg.indexOf("duplicate key error index"))
+                if (err.errmsg & err.errmsg.indexOf("duplicate key error index"))
                     res.send("Book already exists");
                 else
                     res.send(err);
