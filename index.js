@@ -10,9 +10,10 @@ var reviewRouter = require('./routes/review.router');
 var userRouter = require('./routes/user.router');
 var middlewares = require('./middlewares');
 
-var port=process.env.PORT||3000;
+var port = process.env.PORT || 3000;
+
 app.listen(port, function () {
-    console.log("Server running on port 3000");
+    console.log("Server running on port " + port);
 });
 
 mongoose.Promise = global.Promise;
