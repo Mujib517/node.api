@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 var jwt = require('jsonwebtoken');
+var cors = require('cors');
 
 var bookRouter = require('./routes/book.router');
 var defaultRouter = require('./routes/default.router');
@@ -17,10 +18,12 @@ app.listen(port, function () {
 });
 
 mongoose.Promise = global.Promise;
-
 //mongoose.connection.openUri("mongodb://localhost/booksdb");
 mongoose.connection.openUri("mongodb://admin:admin@ds145019.mlab.com:45019/mybooksdb");
+
+
 //middleware
+app.use(cors());  //allow everything 
 app.use(bodyParser.json());
 app.use('/', defaultRouter);
 app.use('/api/user', userRouter);
